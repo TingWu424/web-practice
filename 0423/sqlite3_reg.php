@@ -1,42 +1,47 @@
-<html>
-     <head>
-        <title>register account</title>
-        <meta charset="UTF-8">
 <?php
 if (isset($_POST["acct"])){
     if(strcmp($_POST["pass1"],$_POST["pass2"])){
         printf("<script>alert('密碼不一致')<script>");
     } else {
-        $filename="member.csv";
+        $db = new mysqli("localhost","root","msgboard");
+        $sql=sprintf("SELECT * FROM account WHERE acct='%s'",$_POST["acct"]);
+        $res=$db->query($sql);
+        if($res->num_rows>0){
+           printf("alert('會員已存在');"); 
+        }else {
+            $sql=sprintf("INSERT  INTO account (acct,name,pass) VALUES ('%S','%S','%S')",
+            $_POST["acct"],$_POST["name"],password_hash($_POST["pass1"],PASSWORD_DEFAULT));
+        }
+        /*$filename="member.csv";
         $acct_existed=false;
            if(file_exists($filename)){
               $fp=fopen($filename,"r");
               while(($member=fgetcsv($fp,100)!==FALSE)){
-                if(0==strcmp($member[0],$_POST["acct"])&& password_verify($_POST["pass"],$member[2])){
+                if(0==strcmp($member[0],$_POST["acct"])&& password_verify($_POST["pass"],$member)){
                     printf("alert('歡迎登入，%s');",$member[1]);
-                    $newmeber=false;
+                    printf("location.herf='reg.php';");
                     break;
                 }
               }
-              fclose($fp);
               }
            }
-           if($newmeber){
-            $fp=fopen("member.csv","a");
+        $fp=fopen("member.csv","a");
         fputcsv($fp,[$_POST["acct"],$_POST["name"],
-              password_hash($_POST["pass1"],PASSWORD_DEFAULT) ]);
-              fclose($fp);
-              printf("location.herf='login.php';");
-           }
+              password_hash($_POST["pass1"],PASSWORD_DEFAULT) ]
+    );*/
+    fclose($fp);
+    printf("location.herf='login.php';");
     }
-
+}
 
 
 ?>
-    
+<html>
+    <head>
         <title>註冊會員</title>
         <mata charest="UTF-8">
-    
+    </head>
+
     <body>
         <H1>註冊會員</H1>
         <form method="post">
@@ -47,5 +52,4 @@ if (isset($_POST["acct"])){
         <p><input type="submit" value="註冊"></p>
         </form>
      </body>
-     </head>
 </html>

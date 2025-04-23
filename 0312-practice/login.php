@@ -2,12 +2,21 @@
     <head>
         <title>註冊會員</title>
         <mata charest="UTF-8">
-    </head>
-
-    <body>
+        <script>
+        <?php
+            if(isset($_POST["acct"])){
+            $filename;
+            }          
+    
+        ?> 
+        </script> 
+        <body>
         
     
 
 
-     </body>
+        </body>   
+    </head>
+
+    
 </html>
