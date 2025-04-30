@@ -1,9 +1,14 @@
+<html>
+    <head>
+        <title>註冊會員</title>
+        <meta charest="UTF-8">
+        <script>    
 <?php
 if (isset($_POST["acct"])){
     if(strcmp($_POST["pass1"],$_POST["pass2"])){
-        printf("<script>alert('密碼不一致')<script>");
+        printf("alert('密碼不一致')");
     } else {
-        $db = new mysqli("localhost","root","msgboard");
+        $db = new mysqli("localhost","root","","msgboard");
         $sql=sprintf("SELECT * FROM account WHERE acct='%s'",$_POST["acct"]);
         $res=$db->query($sql);
         if($res->num_rows>0){
@@ -11,6 +16,8 @@ if (isset($_POST["acct"])){
         }else {
             $sql=sprintf("INSERT  INTO account (acct,name,pass) VALUES ('%S','%S','%S')",
             $_POST["acct"],$_POST["name"],password_hash($_POST["pass1"],PASSWORD_DEFAULT));
+            $db->query($sql);
+            printf("location.href='mysql_login.php';");
         }
         /*$filename="member.csv";
         $acct_existed=false;
@@ -29,19 +36,11 @@ if (isset($_POST["acct"])){
         fputcsv($fp,[$_POST["acct"],$_POST["name"],
               password_hash($_POST["pass1"],PASSWORD_DEFAULT) ]
     );*/
-    fclose($fp);
-    printf("location.herf='login.php';");
     }
 }
-
-
 ?>
-<html>
-    <head>
-        <title>註冊會員</title>
-        <mata charest="UTF-8">
+      </script>
     </head>
-
     <body>
         <H1>註冊會員</H1>
         <form method="post">
